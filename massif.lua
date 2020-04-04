@@ -86,6 +86,6 @@ end
 function redraw()
   screen.clear()
   screen.move(64, 32)
-  screen.text_center("8 filters")
+  screen.text_center(". .. ...... . .. .... .. .... . ....... ")
   screen.update()
 end
