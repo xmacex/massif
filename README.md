@@ -1,2 +1,2 @@
-# filterbank
-norns filterbank
+# massif
+norns resonator with 8 peaks
