@@ -1,4 +1,4 @@
-engine.name = "FilterBank"
+engine.name = "ResonatorBank"
 
 
 function init()
