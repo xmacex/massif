@@ -1,2 +1,2 @@
 # massif
-norns resonator with 8 peaks
+*WIP* norns resonator with 8 peaks
