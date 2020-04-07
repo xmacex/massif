@@ -17,9 +17,9 @@ Engine_ResonatorBank : CroneEngine {
       var rings = [ring1, ring2, ring3, ring4, ring5, ring6, ring7, ring8];
 
       var sound = [In.ar(inL), In.ar(inR)];
-      var filters = DynKlank.ar(`[freqs, amps, rings], sound);
+      var resonators = DynKlank.ar(`[freqs, amps, rings], sound);
 
-      Out.ar(out, filters*amp).softclip;
+      Out.ar(out, resonators * amp).softclip;
     }).add;
 
     context.server.sync;
