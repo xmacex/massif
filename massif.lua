@@ -1,10 +1,21 @@
+--
+-- 8 resonant peaks
+--
+-- be careful with the 
+-- amp settings
+--
+-- use the param menu to 
+-- map things to an external
+-- controller
+--
+
 engine.name = "ResonatorBank"
 
 
 function init()
   
-  params:add_control("amp", "amp", controlspec.new(0.0, 1.0, "lin", 0.01, .05))
-  params:set_action("amp", function(v) engine.amp(v) end)
+  --params:add_control("amp", "amp", controlspec.new(0.0, 1.0, "lin", 0.01, .05))
+  --params:set_action("amp", function(v) engine.amp(v) end)
 
   params:add_control("freq1", "freq1", controlspec.new(20, 10000, "lin", 1, math.random(20, 10000), "hz"))
   params:set_action("freq1", function(v) engine.freq1(v) end)
@@ -86,6 +97,10 @@ end
 function redraw()
   screen.clear()
   screen.move(64, 32)
-  screen.text_center(". .. ...... . .. .... .. .... . ....... ")
+  screen.text_center(". .. ... ")
+  screen.move(64, 36)
+  screen.text_center(".... ..... ......")
+  screen.move(64, 40)
+  screen.text_center("....... ........")
   screen.update()
 end
