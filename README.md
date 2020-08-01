@@ -1,3 +1,5 @@
+![](https::github.com/justmat/massif/assets/m.png)
+
 # massif
 *WIP* norns resonator with 8 peaks
 
