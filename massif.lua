@@ -10,10 +10,21 @@
 --
 
 engine.name = "ResonatorBank"
+local MusicUtil = require "musicutil"
+
+local current_page = 1
+
+local mode = 0 -- 0 = play, 1 = edit
+local alt = false
+local pitch_tune = false
+local midi_tune = false
+
+local dirty = true
 
 
 function init()
-  
+  m = midi.connect()
+  m.event = midi_event
   --params:add_control("amp", "amp", controlspec.new(0.0, 1.0, "lin", 0.01, .05))
   --params:set_action("amp", function(v) engine.amp(v) end)
 
@@ -91,16 +102,126 @@ function init()
   
   params:bang()
   
-  redraw()
+  local screen_metro = metro.init()
+  screen_metro.time = 1/30
+  screen_metro.event = function() redraw() end
+  screen_metro:start()
+  
+  pitch_tracker = poll.set("pitch_in_l")
+  pitch_tracker.callback = function(x)
+    if x > 0 then
+      if pitch_tune  == true then
+        params:set("freq" .. current_page, x)
+      end
+    end
+  end
 end
 
+
+function key(n, z)
+  if n == 1 then alt = z == 1 and true or false end
+  if mode == 1 and alt then
+    if n == 2 then 
+      pitch_tune = z == 1 and true or false 
+      pitch_tracker:update()
+    end
+    if n == 3 then midi_tune = z == 1 and true or false end
+  else
+    if n == 2 and z == 1 then
+      mode = 0
+    elseif n == 3 and z == 1 then
+      mode = 1
+    end
+  end
+  dirty = true
+end
+
+
+function enc(n, d)
+  if mode == 1 and alt then
+    if n == 1 then
+      current_page = util.clamp(current_page + d, 1, 8)
+    end
+  else
+    if n == 1 then
+      params:delta("freq" .. current_page, d)
+    elseif n == 2 then
+      params:delta("amp" .. current_page, d)
+    elseif n == 3 then
+      params:delta("ring" .. current_page, d)
+    end
+  end
+  dirty = true
+end
+
+
+local function draw_edit()
+  screen.display_png("/home/we/dust/code/massif/assets/massif.png", 0, 0)
+  screen.level(0)
+  screen.move(64, 16)
+  screen.font_size(24)
+  screen.font_face(1)
+  screen.text_center(current_page)
+  screen.move(64, 22)
+  screen.text_center(".................")
+  screen.font_size(13)
+  screen.font_face(29)
+  screen.move(15, 36)
+  screen.text("freq: ")
+  screen.move(115, 36)
+  screen.text_right(params:get("freq" .. current_page) .. " hz")
+  screen.move(15, 48)
+  screen.text("amp: ")
+  screen.move(115, 48)
+  screen.text_right(params:get("amp" .. current_page))
+  screen.move(15, 60)
+  screen.text("ring: ")
+  screen.move(115, 60)
+  screen.text_right(params:get("ring" .. current_page))
+end
+
+
+local function draw_play()
+  screen.display_png("/home/we/dust/code/massif/assets/massif-4.png", 0, 0)
+  screen.level(0)
+  screen.font_size(13)
+  screen.move(120, 60)
+  screen.text_right("massif")
+end
+
+
 function redraw()
-  screen.clear()
-  screen.move(64, 32)
-  screen.text_center(". .. ... ")
-  screen.move(64, 36)
-  screen.text_center(".... ..... ......")
-  screen.move(64, 40)
-  screen.text_center("....... ........")
+  screen.aa(1)
+  if dirty then
+    screen.clear()
+    if mode == 1 then
+      draw_edit()
+    elseif mode == 0 then
+      draw_play()
+    end
+  end
   screen.update()
+  dirty = false
+end
+
+
+function midi_event(data)
+  if #data == 0 then return end
+  local msg = midi.to_msg(data)
+
+  -- Note off
+  if msg.type == "note_off" then
+    --note_off(msg.note)
+
+    -- Note on
+  elseif msg.type == "note_on" then
+    --print("yes")
+    --note_on(msg.note, msg.vel / 127)
+    if midi_tune == true then
+      params:set("freq" .. current_page, MusicUtil.note_num_to_freq(msg.note))
+    else
+      print("hi")
+      engine.offset(MusicUtil.note_num_to_freq(msg.note))
+    end
+  end
 end
