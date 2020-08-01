@@ -120,18 +120,20 @@ end
 
 function key(n, z)
   if n == 1 then alt = z == 1 and true or false end
-  if mode == 1 and alt then
+  if alt then
+    if n == 2 and z == 1 then
+      mode = 0
+    elseif n == 3 and z == 1 then
+      mode = 1
+    end
+  elseif mode == 1 then
     if n == 2 then 
       pitch_tune = z == 1 and true or false 
       pitch_tracker:update()
     end
     if n == 3 then midi_tune = z == 1 and true or false end
   else
-    if n == 2 and z == 1 then
-      mode = 0
-    elseif n == 3 and z == 1 then
-      mode = 1
-    end
+    
   end
   dirty = true
 end
