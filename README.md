@@ -1,6 +1,6 @@
+# massif
 ![](assets/m.png)
 
-# massif
 *WIP* norns resonator with 8 peaks
 
 * be **careful** with the ``amp`` params, things might blow up
