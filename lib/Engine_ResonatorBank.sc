@@ -7,19 +7,19 @@ Engine_ResonatorBank : CroneEngine {
   }
 
   alloc {
-    SynthDef(\resonatorbank, {|inL, inR, out, amp=0.1, offset=0,
+    SynthDef(\resonatorbank, {|inL, inR, out, amp=0.1,
       freq1, freq2, freq3, freq4, freq5, freq6, freq7, freq8, 
       amp1=0.25, amp2=0.25, amp3=0.25, amp4=0.25, amp5=0.25, amp6=0.25, amp7=0.25, amp8=0.25,
       ring1=0.1, ring2=0.1, ring3=0.1, ring4=0.1, ring5=0.1, ring6=0.1, ring7=0.1, ring8=0.1|
 
-      var freqs = [freq1 + offset, freq2 + offset, freq3 + offset, freq4 + offset, freq5 + offset, freq6 + offset, freq7 + offset, freq8 + offset];
+      var freqs = [freq1, freq2, freq3, freq4, freq5, freq6 , freq7, freq8];
       var amps = [amp1, amp2, amp3, amp4, amp5, amp6, amp7, amp8];
       var rings = [ring1, ring2, ring3, ring4, ring5, ring6, ring7, ring8];
 
       var sound = [In.ar(inL), In.ar(inR)];
       var resonators = DynKlank.ar(`[freqs, amps, rings], sound);
 
-      Out.ar(out, resonators * amp).softclip;
+      Out.ar(out, resonators * amp);
     }).add;
 
     context.server.sync;
@@ -34,10 +34,6 @@ Engine_ResonatorBank : CroneEngine {
 // commands
     this.addCommand("amp", "f", {|msg|
       synth.set(\amp, msg[1]);
-    });
-    
-    this.addCommand("offset", "f", {|msg|
-      synth.set(\offset, msg[1]);
     });
 
     this.addCommand("freq1", "f", {|msg|
