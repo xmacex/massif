@@ -16,7 +16,6 @@ local current_res = 1
 
 local mode = 0 -- 0 = play, 1 = edit
 local alt = false
---local pitch_tune = false
 local midi_tune = false
 
 local dirty = true
@@ -168,14 +167,12 @@ function key(n, z)
   else
     if mode == 1 then
       if n == 2 and z == 1 then 
-       --pitch_tune = z == 1 and true or false 
         pitch_tracker:update()
       elseif n == 3 and z == 1 then
         midi_tune = z == 1 and true or false
       end
     elseif mode == 0 then
       if n == 2 and z == 1 then
-        --pitch_tune = z == 1 and true or false 
         pitch_tracker:update()
       end
     end
@@ -197,14 +194,6 @@ function enc(n, d)
     elseif n == 3 then
       params:delta("ring" .. current_res, d)
     end
-  elseif mode == 0 then
-    --[[if n == 1 then
-      params:delta("freqs_offset", d)
-    elseif n == 2 then
-      params:delta("rings_offset", d)
-    elseif n == 3 then
-      params:delta("amps_offset", d)
-    end]]
   end
   dirty = true
 end
