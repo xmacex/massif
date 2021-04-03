@@ -263,9 +263,7 @@ function midi_event(data)
     --note_on(msg.note, msg.vel / 127)
     if midi_tune == true then
       params:set("freq" .. current_res, MU.note_num_to_freq(msg.note))
-    else
-      print("hi")
-      engine.offset(MU.note_num_to_freq(msg.note))
     end
   end
 end
+
