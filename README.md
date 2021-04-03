@@ -6,7 +6,7 @@ a resonator with 8 peaks
 ## controls
 * key 1 = alt
 
-# play
+### play
 
 * key 2 = tunes all peaks to random notes of your selected scale, based on the pitch at the left input
 
@@ -16,7 +16,7 @@ a resonator with 8 peaks
 
 hold alt and press key 3 to enter **edit** mode. 
 
-# edit
+### edit
 
 * key 2 = tune current peak to the pitch at the left input
 * key 3 = hold and play a midi note to tune current peak to the midi note
