@@ -19,7 +19,6 @@ local alt = false
 local midi_tune = false
 
 local dirty = true
-local dirty_from_menu = false
 
 local scale_options = {}
 
@@ -140,7 +139,7 @@ function init()
   local screen_metro = metro.init()
   screen_metro.time = 1/30
   screen_metro.event = function()
-    if not dirty_from_menu and _menu.mode then dirty = true end
+    if _menu.mode then dirty = true end
     redraw()
   end
   screen_metro:start()
