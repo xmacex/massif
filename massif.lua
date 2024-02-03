@@ -138,7 +138,10 @@ function init()
   
   local screen_metro = metro.init()
   screen_metro.time = 1/30
-  screen_metro.event = function() redraw() end
+  screen_metro.event = function()
+    if _menu.mode then dirty = true end
+    redraw()
+  end
   screen_metro:start()
   
   pitch_tracker = poll.set("pitch_in_l")
